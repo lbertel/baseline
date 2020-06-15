@@ -5,13 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-
 @ComponentScan({
     "io.ps.web",
     "io.ps.shared",
     "io.ps.app",
     "io.ps.infra",
-    "io.ps.domain"
+    "io.ps.infra.clients.persistence",
+    "io.ps.domain",
 })
 public class Starter {
 

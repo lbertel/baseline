@@ -1,4 +1,5 @@
 group = 'com.ps.domain'
+version = '1.0'
 
 dependencies {
 }
