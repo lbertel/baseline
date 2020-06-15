@@ -1,0 +1,60 @@
+// for all projects
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    version '1.0'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        //prod
+        implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+        //test
+        testImplementation('org.junit.jupiter:junit-jupiter:5.6.2')
+        testImplementation( 'org.hamcrest:hamcrest-library:2.2')
+        testImplementation('org.mockito:mockito-core:3.3.3')
+        testImplementation('org.mockito:mockito-junit-jupiter:3.3.3')
+    }
+
+    test{
+        useJUnitPlatform()
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+    //shows the routes of the different projects (debug)
+    task view_paths {
+        doLast { task ->
+            println "$task.project.name"
+            println "------------------"
+            println "Main: $sourceSets.main.java.srcDirTrees"
+            println "   Resources: $sourceSets.main.resources.srcDirTrees"
+            println "Tests: $sourceSets.test.java.srcDirTrees"
+            println "   Resources: $sourceSets.test.resources.srcDirTrees"
+        }
+    }
+
+}
+
+// for all subprojects
+subprojects {
+    group = "io.ps.${rootProject.name}"
+
+    // add shared module to all subproject
+    dependencies {
+        if (project.name != "shared") {
+            implementation project(":shared")
+            testImplementation project(":shared").sourceSets.test.output
+        }
+    }
+}
+
+// Main project (located in apps/)
